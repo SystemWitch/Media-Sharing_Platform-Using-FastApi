@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}My Media{% endblock %}
+
+{% block content %}
+<div class="space-y-10">
+
+  <section id="upload-area" class="max-w-3xl mx-auto ...">
+    <h2 class="text-2xl font-bold mb-6">Upload New Media</h2>
+    <form id="upload-form" class="space-y-6">
+      <input type="file" id="file-input" required class="block w-full text-sm text-gray-700 file:mr-4 file:py-3 file:px-6 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-white hover:file:bg-blue-700 cursor-pointer" />
+      <button type="submit" class="w-full bg-primary text-white py-3 rounded-md font-medium hover:bg-blue-700 transition">
+        Upload File
+      </button>
+    </form>
+  </section>
+
+  <section>
+    <h2 class="text-2xl font-bold mb-6">Your Media</h2>
+    <div id="media-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/media.js"></script>
+{% endblock %}

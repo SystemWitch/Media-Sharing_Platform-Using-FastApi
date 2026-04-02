@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Media Share – Vibrant Edition{% endblock %}</title>
+
+  <!-- Tailwind with colorful custom config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'v-pink':   '#ff4d94',
+            'v-purple': '#9f7aea',
+            'v-cyan':   '#00f5d4',
+            'v-yellow': '#ffdd57',
+            'v-orange': '#ff9f1c',
+            'v-indigo': '#6366f1',
+          },
+          backgroundImage: {
+            'vibrant-radial': 'radial-gradient(circle at 30% 70%, #ff4d94 0%, #9f7aea 40%, #00f5d4 80%)',
+            'neon-gradient':  'linear-gradient(135deg, #ff4d94, #9f7aea, #00f5d4, #ffdd57)',
+          },
+          animation: {
+            'slow-shift': 'colorShift 18s ease infinite',
+            'gentle-float': 'float 7s ease-in-out infinite',
+          },
+          keyframes: {
+            colorShift: {
+              '0%, 100%': { 'background-position': '0% 50%' },
+              '50%':      { 'background-position': '100% 50%' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%':      { transform: 'translateY(-20px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Vanta.js + three.js (3D animated background) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+
+  <!-- tsParticles – colorful floating particles -->
+  <script src="https://cdn.jsdelivr.net/npm/@tsparticles/all@3/tsparticles.all.min.js"></script>
+
+  <style>
+    body { overflow-x: hidden; }
+    #particles-js { position: fixed; inset: 0; z-index: -2; pointer-events: none; }
+    #vanta-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.45; }
+    main { position: relative; z-index: 10; }
+    header { backdrop-filter: blur(8px); }
+  </style>
+</head>
+
+<body class="min-h-screen text-gray-900 bg-gradient-to-br from-v-purple via-v-pink to-v-cyan animate-slow-shift bg-[length:300%_300%]">
+
+  <!-- Particles layer -->
+  <div id="particles-js"></div>
+
+  <!-- Vanta 3D waves layer -->
+  <div id="vanta-bg"></div>
+
+  <header class="relative z-20 bg-black/30 backdrop-blur-md border-b border-white/20 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex justify-between items-center">
+      <a href="/" class="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-v-yellow via-v-pink to-v-cyan hover:opacity-90 transition">
+        Media Share
+      </a>
+      <nav>
+        <ul class="flex items-center space-x-8 text-white font-medium">
+          <li id="media-nav" class="hidden"><a href="/media" class="hover:text-v-yellow transition-colors">Gallery</a></li>
+          <li id="logout-nav" class="hidden"><button id="logout-btn" class="hover:text-v-pink transition-colors">Logout</button></li>
+          <li id="login-nav"><a href="/login" class="hover:text-v-yellow transition-colors">Login</a></li>
+          <li id="register-nav"><a href="/register" class="hover:text-v-cyan transition-colors">Register</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="relative z-20 bg-black/40 backdrop-blur-md text-white/80 py-6 mt-auto border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 text-center text-sm">
+      © 2026 Media Share • media sharing platform developed by darain rahman using fastapi
+    </div>
+  </footer>
+
+  <!-- Keep your existing auth script -->
+  <script src="/static/js/auth.js"></script>
+
+  <!-- Initialize Vanta 3D waves -->
+  <script>
+    VANTA.WAVES({
+      el: "#vanta-bg",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200,
+      minWidth: 200,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x9f7aea,
+      shininess: 40,
+      waveHeight: 20,
+      waveSpeed: 0.6,
+      zoom: 0.8
+    })
+  </script>
+
+  <!-- Initialize colorful particles -->
+  <script>
+    tsParticles.load("particles-js", {
+      fullScreen: { enable: true, zIndex: -1 },
+      fpsLimit: 60,
+      particles: {
+        number: { value: 60, density: { enable: true, value_area: 800 } },
+        color: { value: ["#ff4d94", "#9f7aea", "#00f5d4", "#ffdd57", "#ff9f1c", "#6366f1"] },
+        shape: { type: ["circle", "triangle", "star"] },
+        opacity: { value: 0.65, random: true, anim: { enable: true, speed: 1.2, opacity_min: 0.3 } },
+        size: { value: 4.5, random: true },
+        move: {
+          enable: true,
+          speed: 1.5,
+          direction: "none",
+          random: true,
+          straight: false,
+          outModes: "out",
+          attract: { enable: true, rotateX: 600, rotateY: 1200 }
+        }
+      },
+      interactivity: {
+        detectsOn: "canvas",
+        events: {
+          onhover: { enable: true, mode: "grab" },
+          onclick: { enable: true, mode: "push" },
+          resize: true
+        },
+        modes: {
+          grab: { distance: 160, links: { opacity: 0.5 } },
+          push: { quantity: 3 }
+        }
+      },
+      detectRetina: true
+    });
+  </script>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>
