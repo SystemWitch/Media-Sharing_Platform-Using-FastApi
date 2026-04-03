@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 
-SQLALCHEMY_DATABASE_URL = "mysql+aiomysql://root:Darain123@localhost:3306/daraindb"
+SQLALCHEMY_DATABASE_URL = "yourlink"
 
 
 engine = create_async_engine(SQLALCHEMY_DATABASE_URL, echo=True)
